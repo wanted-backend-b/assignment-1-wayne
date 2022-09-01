@@ -5,12 +5,6 @@ from users.models import User
 
 # 공지사항 모델링
 
-class NoticeBoard(TimeStampCreateModel):
-    notice_posting = models.ForeignKey("NoticeBoardPosting", on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = "notices_boards"
-
 class NoticeBoardPosting(TimeStampCreateModel):
     title   = models.CharField(max_length=100)
     context = models.CharField(max_length=500)
@@ -37,12 +31,6 @@ class NoticeComment(TimeStampModel):
 
 # 자유게시판 모델링
 
-class FreeBoard(TimeStampCreateModel):
-    free_board_posting = models.ForeignKey("FreeBoardPosting", on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = "free_boards"
-
 class FreeBoardPosting(TimeStampCreateModel):
     title   = models.CharField(max_length=100)
     context = models.CharField(max_length=500)
@@ -68,12 +56,6 @@ class FreeComment(TimeStampModel):
         db_table = "free_comments"
 
 # 운영게시판 모델링
-
-class OperatingBoard(TimeStampCreateModel):
-    operating_board_posting = models.ForeignKey("OperatingBoardPosting", on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = "operating_boards"
 
 class OperatingBoardPosting(TimeStampCreateModel):
     title   = models.CharField(max_length=100)
