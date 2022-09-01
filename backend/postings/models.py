@@ -8,8 +8,8 @@ from users.models import User
 class NoticeBoardPosting(TimeStampCreateModel):
     title   = models.CharField(max_length=100)
     context = models.CharField(max_length=500)
-    view    = models.ManyToManyField(User, through="NoticeView")
-    comment = models.ManyToManyField(User, through="NoticeComment")
+    view    = models.ManyToManyField(User, through="NoticeView", related_name="notice_view")
+    comment = models.ManyToManyField(User, through="NoticeComment", related_name="notice_comment")
 
     class Meta:
         db_table = "notices_boards"
@@ -34,8 +34,8 @@ class NoticeComment(TimeStampModel):
 class FreeBoardPosting(TimeStampCreateModel):
     title   = models.CharField(max_length=100)
     context = models.CharField(max_length=500)
-    view    = models.ManyToManyField(User, through="FreeView")
-    comment = models.ManyToManyField(User, through="FreeComment")
+    view    = models.ManyToManyField(User, through="FreeView", related_name="posting_view")
+    comment = models.ManyToManyField(User, through="FreeComment", related_name="posting_comment")
 
     class Meta:
         db_table = "free_boards"
@@ -60,8 +60,8 @@ class FreeComment(TimeStampModel):
 class OperatingBoardPosting(TimeStampCreateModel):
     title   = models.CharField(max_length=100)
     context = models.CharField(max_length=500)
-    view    = models.ManyToManyField(User, through="OperatingView")
-    comment = models.ManyToManyField(User, through="OperatingComment")
+    view    = models.ManyToManyField(User, through="OperatingView", related_name="operating_view")
+    comment = models.ManyToManyField(User, through="OperatingComment", related_name="operatin_comment")
 
     class Meta:
         db_table = "operating_boards"
