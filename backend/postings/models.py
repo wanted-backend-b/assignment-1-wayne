@@ -1,8 +1,5 @@
 from django.db import models
 
-# Create your models here.
-from django.db import models
-
 from core.models  import TimeStampCreateModel, TimeStampModifyModel, TimeStampModel
 from users.models import User
 
