@@ -1,2 +1,2 @@
-CREATE DATABASE wayne NOT EXISTS wayne;
+CREATE DATABASE wayne IF NOT EXISTS wayne;
 USE wayne;
