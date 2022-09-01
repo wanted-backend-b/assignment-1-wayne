@@ -24,7 +24,6 @@ class NoticeBoardListView(View):
 
         return JsonResponse({'results' : results}, status = 200)
 
-
 class NoticeDetailView(View):
     """
     * @code writer 조현우

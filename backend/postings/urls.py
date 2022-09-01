@@ -1,6 +1,6 @@
 from django.urls import path
 
-from postings.views import FreeBoardListView, FreeBoardDetailView
+from postings.views import NoticeView
 
 urlpatterns = [
     path("notices", FreeBoardListView.as_view()),
