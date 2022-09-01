@@ -1,4 +1,4 @@
-import json, jwt, bcrypt
+import json, bcrypt, os, jwt
 
 from django.shortcuts import render
 from django.views import View
@@ -8,12 +8,17 @@ from .models import User
 
 
 class SignUpView(View):
+    ''' 유저 회원가입 API '''
     def post(self, request):
         try:
             data = json.loads(request.body)
             name = data['name']
             email = data['email']
-            password = data['password']
+            password = data['psword']
+            gender = data['gender']
+            age = data['age']
+            phone_number = data['phone_number']
+            level = data['level']
 
             if User.objects.filter(email=email).exists():
                 return JsonResponse({'message': '이미 있는 이메일입니다.'}, status=400)
@@ -24,10 +29,14 @@ class SignUpView(View):
             User.objects.create(
                 name=name,
                 email=email,
-                password=decode_password
+                psword=decode_password,
+                gender=gender,
+                age=age,
+                phone_number=phone_number,
+                level=level
             )
-
             return JsonResponse({'message': 'success'}, status=201)
 
-        except:
+        except Exception as e:
+            print("error: ", e) # 에러 코드 확인
             return JsonResponse({'message': 'error'}, status=400)
