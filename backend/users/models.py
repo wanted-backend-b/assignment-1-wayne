@@ -11,9 +11,9 @@ class User(TimeStampCreateModel):
     gender          = models.CharField(max_length=100)
     age             = models.CharField(max_length=100)
     phone_number    = models.CharField(max_length=100)
-    notice          = models.ForeignKey("postings.NoticeBoardPosting", on_delete=models.CASCADE)
-    free_board      = models.ForeignKey("postings.FreeBoardPosting", on_delete=models.CASCADE)
-    operation_board = models.ForeignKey("postings.OperatingBoardPosting", on_delete=models.CASCADE)
+    notice          = models.ForeignKey("postings.NoticeBoardPosting", on_delete=models.CASCADE, blank=True, null=True)
+    free_board      = models.ForeignKey("postings.FreeBoardPosting", on_delete=models.CASCADE, blank=True, null=True)
+    operation_board = models.ForeignKey("postings.OperatingBoardPosting", on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
         db_table = "users"
