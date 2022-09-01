@@ -57,7 +57,8 @@ class NoticeDetailView(View):
     """
     def post(self, request):
         try:
-            data    = json.loads(request.body)
+            data = json.loads(request.body)
+            user = request.user
 
             if user.level != 2:
                 return JsonResponse({'message' : 'NO_AUTHENTIFICATION'}, status = 403)
