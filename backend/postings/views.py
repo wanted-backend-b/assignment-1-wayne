@@ -1,68 +1,65 @@
 import json
 
-from django.views import View
-from django.http  import JsonResponse
+from django.views  import View
+from django.http   import JsonResponse
 
-from postings.models import NoticeBoardPosting, NoticeComment, NoticeView
+from postings.models import FreeBoardPosting, FreeComment, FreeView
 
-class NoticeBoardListView(View):
+class FreeBoardListView(View):
     """
     * @code writer 조현우
-    * @GET ("/postings/notices")
+    * @GET ("/postings/freeboards")
     *
     * @returns json
     """
     def get(self, request):
-        postings = NoticeBoardPosting.objects.all()
+        postings = FreeBoardPosting.objects.all()
 
         results = [{
             'id'      : posting.id,
             'title'   : posting.title,
             'context' : posting.context[:15],
-            'views'   : NoticeView.objects.filter(notice_posting=posting).count()
+            'views'   : FreeView.objects.filter(free_board_posting=posting).count()
         } for posting in postings ]
 
         return JsonResponse({'results' : results}, status = 200)
 
-class NoticeDetailView(View):
+
+class FreeBoardDetailView(View):
     """
     * @code writer 조현우
-    * @GET ("/postings/notices/detail")
+    * @GET ("/postings/freeboards/detail")
     *
     * @returns json
     """
     def get(self, request, posting_id):
         try:
-            posting = NoticeBoardPosting.objects.get(id=posting_id)
-            comments = NoticeComment.objects.filter(notice_posting=posting)
+            posting = FreeBoardPosting.objects.get(id=posting_id)
+            comments = FreeComment.objects.filter(free_board_posting=posting)
 
             result = {
                 'id'       : posting.id,
                 'title'    : posting.title,
                 'context'  : posting.context,
-                'views'    : NoticeView.objects.filter(notice_posting=posting).count(),
+                'views'    : FreeView.objects.filter(free_board_posting=posting).count(),
                 'comments' : [comment for comment in comments]
             }
 
             return JsonResponse({'result' : result}, status = 200)
-        except NoticeBoardPosting.DoesNotExist:
+        except FreeBoardPosting.DoesNotExist:
             return JsonResponse({'message' : 'POSTING_DOES_NOT_EXIST'}, status = 400)
 
     """
     * @code writer 조현우
-    * @POST ("/postings/notices/detail/<int:posting_id>")
+    * @POST ("/postings/freeboards/detail/<int:posting_id>")
     *
     * @returns json
     """
     def post(self, request):
         try:
-            data = json.loads(request.body)
-            user = request.user
+            data    = json.loads(request.body)
 
-            if user.level != 2:
-                return JsonResponse({'message' : 'NO_AUTHENTIFICATION'}, status = 403)
-
-            posting, is_created = NoticeBoardPosting.objects.update_or_create(
+            posting, is_created = FreeBoardPosting.objects.update_or_create(
                 title    = data['title'],
                 context  = data['context'],
                 defaults = {
@@ -79,23 +76,18 @@ class NoticeDetailView(View):
 
     """
     * @code writer 조현우
-    * @DELETE ("/postings/notices/detail")
+    * @DELETE ("/postings/freeboards/detail")
     *
     * @returns json
     """
     def delete(self, request):
         try:
-            data = json.loads(request)
-            user = request.user
-
-            if user.level != 2:
-                return JsonResponse({'message' : 'NO_AUTHENTIFICATION'}, status = 403)
-
-            posting = NoticeBoardPosting.objects.get(id=data["posting_id"])
+            data    = json.loads(request)
+            posting = FreeBoardPosting.objects.get(id=data["posting_id"])
             posting.delete()
 
             return JsonResponse({'message' : 'DATA_DELETED'}, status = 204)
         except KeyError:
             return JsonResponse({'message' : 'KEY_ERROR'}, status = 400)
-        except NoticeBoardPosting.DoesNotExist:
-            return JsonResponse({'message' : 'POSTING_DOES_NOT_EXIST'}, status = 400) 
+        except FreeBoardPosting.DoesNotExist:
+            return JsonResponse({'message' : 'DATA_DOES_NOT_EXIST'}, status = 400)

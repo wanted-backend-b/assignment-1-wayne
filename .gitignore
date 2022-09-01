@@ -10,6 +10,3 @@ __pycache__/
 
 # Environments
 # .env
-
-# mysql
-mysql_data/
