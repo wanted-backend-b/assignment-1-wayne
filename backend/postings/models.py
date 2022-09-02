@@ -8,8 +8,8 @@ from users.models import User
 class NoticeBoardPosting(TimeStampCreateModel):
     title   = models.CharField(max_length=100)
     context = models.CharField(max_length=500)
-    view    = models.ManyToManyField(User, through="NoticeView", related_name="notice_view", null=True)
-    comment = models.ManyToManyField(User, through="NoticeComment", related_name="notice_comment", null=True)
+    view    = models.ManyToManyField(User, through="NoticeView", related_name="notice_view")
+    comment = models.ManyToManyField(User, through="NoticeComment", related_name="notice_comment")
     user    = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
