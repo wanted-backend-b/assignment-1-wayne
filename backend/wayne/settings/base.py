@@ -11,9 +11,12 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 # os 환경변수
 import os
+import pymysql
 
 from pathlib import Path
 from dotenv import load_dotenv  # dotenv
+
+pymysql.install_as_MySQLdb()
 
 load_dotenv()
 
@@ -44,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "postings",
     "users",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -83,16 +87,16 @@ WSGI_APPLICATION = "wayne.wsgi.application"
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
+#         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
 #     }
 # }
 
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "wanted_posting",
+        "NAME": "wayne",
         "USER": "root",
-        "PASSWORD": "0000",
+        "PASSWORD": "root1234",
         "HOST": "localhost",
         "PORT": "3306",
 

@@ -1,4 +1,5 @@
-import os, jwt
+import os
+import jwt
 
 from django.http import JsonResponse
 

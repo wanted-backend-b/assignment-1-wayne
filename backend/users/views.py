@@ -4,6 +4,7 @@ from django.views import View
 from django.http import JsonResponse
 
 from .models import User
+from .utils import login_deco
 
 
 class SignUpView(View):
@@ -37,8 +38,7 @@ class SignUpView(View):
             return JsonResponse({'message': '회원가입 완료'}, status=201)
 
         except Exception as e:
-            print("error: ", e) # 에러 코드 확인
-            return JsonResponse({'message': '회원가입 실패'}, status=400)
+            return JsonResponse({'message': str(e)}, status=400)
 
 
 class LogInView(View):
@@ -61,12 +61,11 @@ class LogInView(View):
                 return JsonResponse({"message": "잘못된 비밀번호입니다."}, status=401)
 
             token = jwt.encode({'user_id': user.id}, os.environ.get("SECRET"), os.environ.get("ALGORITHM"))
-
+            print(token)
             return JsonResponse({'token': token}, status=200)
 
         except Exception as e:
-            print("error: ", e)
-            return JsonResponse({'message': '로그인 실패'}, status=400)
+            return JsonResponse({'message': str(e)}, status=400)
 
 
 class WithdrawalView(View):
@@ -95,6 +94,5 @@ class WithdrawalView(View):
                 return JsonResponse({"message":"회원탈퇴 완료"}, status=200)
 
         except Exception as e:
-            print("error:", e)
-            return JsonResponse({"message": "회원탈퇴 실패"}, status=400)
+            return JsonResponse({"message": str(e)}, status=400)
 
