@@ -40,3 +40,32 @@ class SignUpView(View):
             print("error: ", e) # 에러 코드 확인
             return JsonResponse({'message': '회원가입 실패'}, status=400)
 
+
+class LogInView(View):
+    ''' 유저 로그인 API '''
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            email = data['email']
+            password = data['psword']
+
+            if not User.objects.filter(email=email).exists():
+                return JsonResponse({"message": "이메일을 다시 입력하세요."}, status=401)
+
+            user = User.objects.get(email=email)
+
+            encoded_password = password.encode('utf-8')
+            encoded_db_password = user.psword.encode('utf-8')
+
+            if not bcrypt.checkpw(encoded_password, encoded_db_password):
+                return JsonResponse({"message": "잘못된 비밀번호입니다."}, status=401)
+
+            token = jwt.encode({'user_id': user.id}, os.environ.get("SECRET"), os.environ.get("ALGORITHM"))
+
+            return JsonResponse({'token': token}, status=200)
+
+        except Exception as e:
+            print("error: ", e)
+            return JsonResponse({'message': '로그인 실패'}, status=400)
+
+
