@@ -1,6 +1,6 @@
 from django.db import models
 
-from core.models  import TimeStampCreateModel, TimeStampModifyModel, TimeStampModel
+from core.models  import TimeStampCreateModel, TimeStampModel
 from users.models import User
 
 # 공지사항 모델링
@@ -10,6 +10,7 @@ class NoticeBoardPosting(TimeStampCreateModel):
     context = models.CharField(max_length=500)
     view    = models.ManyToManyField(User, through="NoticeView", related_name="notice_view")
     comment = models.ManyToManyField(User, through="NoticeComment", related_name="notice_comment")
+    user    = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
         db_table = "notices_boards"
@@ -36,6 +37,7 @@ class FreeBoardPosting(TimeStampCreateModel):
     context = models.CharField(max_length=500)
     view    = models.ManyToManyField(User, through="FreeView", related_name="posting_view")
     comment = models.ManyToManyField(User, through="FreeComment", related_name="posting_comment")
+    user    = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
         db_table = "free_boards"
@@ -62,6 +64,7 @@ class OperatingBoardPosting(TimeStampCreateModel):
     context = models.CharField(max_length=500)
     view    = models.ManyToManyField(User, through="OperatingView", related_name="operating_view")
     comment = models.ManyToManyField(User, through="OperatingComment", related_name="operatin_comment")
+    user    = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
         db_table = "operating_boards"
