@@ -3,7 +3,11 @@ import json
 from django.views import View
 from django.http import JsonResponse
 
-from postings.models import OperatingBoardPosting, OperatingComment, OperatingView
+from postings.models import (
+    OperatingBoardPosting,
+    OperatingComment,
+    OperatingView,
+)
 
 
 class OperatingListView(View):
@@ -50,10 +54,14 @@ class OperatingDetailView(View):
             user = request.user
 
             if user.level != 2:
-                return JsonResponse({"message": "NO_AUTHENTIFICATION"}, status=403)
+                return JsonResponse(
+                    {"message": "NO_AUTHENTIFICATION"}, status=403
+                )
 
             posting = OperatingBoardPosting.objects.get(id=posting_id)
-            comments = OperatingComment.objects.filter(operating_board_posting=posting)
+            comments = OperatingComment.objects.filter(
+                operating_board_posting=posting
+            )
 
             result = {
                 "id": posting.id,
@@ -67,7 +75,9 @@ class OperatingDetailView(View):
 
             return JsonResponse({"result": result}, status=200)
         except OperatingBoardPosting.DoesNotExist:
-            return JsonResponse({"message": "POSTING_DOES_NOT_EXIST"}, status=400)
+            return JsonResponse(
+                {"message": "POSTING_DOES_NOT_EXIST"}, status=400
+            )
 
     """
     * @code writer 조현우
@@ -81,9 +91,14 @@ class OperatingDetailView(View):
             data = json.loads(request.body)
 
             if user.level != 2:
-                return JsonResponse({"message": "NO_AUTHENTIFICATION"}, status=403)
+                return JsonResponse(
+                    {"message": "NO_AUTHENTIFICATION"}, status=403
+                )
 
-            posting, is_created = OperatingBoardPosting.objects.update_or_create(
+            (
+                posting,
+                is_created,
+            ) = OperatingBoardPosting.objects.update_or_create(
                 title=data["title"],
                 context=data["context"],
                 defaults={"title": data["title"], "context": data["context"]},
@@ -108,7 +123,9 @@ class OperatingDetailView(View):
             user = request.user
 
             if user.level != 2:
-                return JsonResponse({"message": "NO_AUTHENTIFICATION"}, status=403)
+                return JsonResponse(
+                    {"message": "NO_AUTHENTIFICATION"}, status=403
+                )
 
             posting = OperatingBoardPosting.objects.get(id=data["posting_id"])
             posting.delete()
@@ -117,4 +134,6 @@ class OperatingDetailView(View):
         except KeyError:
             return JsonResponse({"message": "KEY_ERROR"}, status=400)
         except OperatingBoardPosting.DoesNotExist:
-            return JsonResponse({"message": "POSTING_DOES_NOT_EXIST"}, status=400)
+            return JsonResponse(
+                {"message": "POSTING_DOES_NOT_EXIST"}, status=400
+            )
