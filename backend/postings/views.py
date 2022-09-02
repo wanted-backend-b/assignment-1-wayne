@@ -3,7 +3,9 @@ import json
 from django.views import View
 from django.http  import JsonResponse
 
-from postings.models import NoticeBoardPosting, NoticeComment, NoticeView
+from .models import NoticeBoardPosting, NoticeComment, NoticeView
+from users.utils import login_deco
+
 
 class NoticeBoardListView(View):
     """
@@ -12,6 +14,8 @@ class NoticeBoardListView(View):
     *
     * @returns json
     """
+
+    @login_deco
     def get(self, request):
         postings = NoticeBoardPosting.objects.all()
 
