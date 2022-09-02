@@ -6,7 +6,7 @@ DATABASES = {
         "NAME": "wayne",
         "USER": "root",
         "PASSWORD": "root1234",
-        "HOST": "mysql",
+        "HOST": "localhost",
         "PORT": "3306",
     }
 }
