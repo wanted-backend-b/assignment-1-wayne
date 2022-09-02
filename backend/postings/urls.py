@@ -6,5 +6,4 @@ urlpatterns = [
     path("freeboards", FreeBoardListView.as_view()),
     path("freeboards/detail", FreeBoardDetailView.as_view()),
     path("freeboards/detail/<int:posting_id>", FreeBoardDetailView.as_view()),
-    
 ]
