@@ -36,8 +36,6 @@ class NoticeComment(TimeStampModel):
 
 
 # 자유게시판 모델링
-
-
 class FreeBoardPosting(TimeStampCreateModel):
     title = models.CharField(max_length=100)
     context = models.CharField(max_length=500)
