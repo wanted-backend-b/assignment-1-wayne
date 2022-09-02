@@ -69,3 +69,32 @@ class LogInView(View):
             return JsonResponse({'message': '로그인 실패'}, status=400)
 
 
+class WithdrawalView(View):
+    ''' 유저 회원탈퇴 API '''
+
+    @login_deco
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            email = data['email']
+            password = data['psword']
+
+            if not User.objects.filter(email=email).exists():
+                return JsonResponse({"message": "이메일을 다시 입력하세요"}, status=401)
+
+            user = User.objects.filter(email=email).first()
+
+            encoded_password = password.encode('utf-8')
+            encoded_db_password = user.psword.encode('utf-8')
+
+            if not bcrypt.checkpw(encoded_password, encoded_db_password):
+                return JsonResponse({"message": "잘못된 비밀번호입니다."}, status=401)
+
+            if user:
+                user.delete()
+                return JsonResponse({"message":"회원탈퇴 완료"}, status=200)
+
+        except Exception as e:
+            print("error:", e)
+            return JsonResponse({"message": "회원탈퇴 실패"}, status=400)
+
