@@ -4,15 +4,13 @@ import os
 
 from django.test import TestCase, Client
 
-from postings.models import NoticeBoardPosting, NoticeComment, NoticeView
+from postings.models import OperatingBoardPosting, OperatingComment, OperatingView
 from users.models    import User
 
-
-# 자유게시판 리스트 API unit test
-class NoticeListView(TestCase):
+class OperatingListView(TestCase):
     def setUp(self):
         User.objects.create(
-            id              = 1,
+                id              = 1,
             email           = 'aasdfa@naver.com',
             psword          = '123AAV@@#',
             name            = '홍길동',
@@ -22,24 +20,24 @@ class NoticeListView(TestCase):
             phone_number    = '010-2222-3333',
         )
 
-        NoticeBoardPosting.objects.create(
+        OperatingBoardPosting.objects.create(
             id      = 1,
             title   = 'Hi',
             context = 'Hi',
             user    = User.objects.get(id=1)
         )
 
-        NoticeComment.objects.create(
-            id             = 1,
-            user           = User.objects.get(id=1),
-            notice_posting = NoticeBoardPosting.objects.get(id=1),
-            comment        = "AAAA"
+        OperatingComment.objects.create(
+            id                      = 1,
+            user                    = User.objects.get(id=1),
+            operating_board_posting = OperatingBoardPosting.objects.get(id=1),
+            comment                 = "AAAA"
         )
 
-        NoticeView.objects.create(
-            id             = 1,
-            user           = User.objects.get(id=1),
-            notice_posting = NoticeBoardPosting.objects.get(id=1),
+        OperatingView.objects.create(
+            id                      = 1,
+            user                    = User.objects.get(id=1),
+            operating_board_posting = OperatingBoardPosting.objects.get(id=1),
         )
 
         self.token = jwt.encode({'user_id':User.objects.get(id=1).id}, os.environ.get("SECRET"), 
@@ -47,15 +45,15 @@ class NoticeListView(TestCase):
 
     def tearDown(self):
         User.objects.all().delete()
-        NoticeBoardPosting.objects.all().delete()
-        NoticeComment.objects.all().delete()
-        NoticeView.objects.all().delete()
+        OperatingBoardPosting.objects.all().delete()
+        OperatingComment.objects.all().delete()
+        OperatingView.objects.all().delete()
 
     # 자유게시판 리스트 조회 API unit test
     def test_success_list_view_get(self):
         client   = Client()
         header   = {"HTTP_Authorization" : self.token}
-        response = client.get("/postings/notices", **header, content_type='application/json')
+        response = client.get("/postings/operatings", **header, content_type='application/json')
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {'results' : [{
@@ -67,7 +65,7 @@ class NoticeListView(TestCase):
 
 
 # 자유게시판 상세 API unit test
-class NoticeDetailView(TestCase):
+class OperatingDetailView(TestCase):
     def setUp(self):
         User.objects.create(
             id              = 1,
@@ -80,24 +78,24 @@ class NoticeDetailView(TestCase):
             phone_number    = '010-2222-3333',
         )
 
-        NoticeBoardPosting.objects.create(
+        OperatingBoardPosting.objects.create(
             id      = 1,
             title   = 'Hi',
             context = 'Hi',
             user    = User.objects.get(id=1)
         )
 
-        NoticeComment.objects.create(
-            id             = 1,
-            user           = User.objects.get(id=1),
-            notice_posting = NoticeBoardPosting.objects.get(id=1),
-            comment        = "AAAA"
+        OperatingComment.objects.create(
+            id                      = 1,
+            user                    = User.objects.get(id=1),
+            operating_board_posting = OperatingBoardPosting.objects.get(id=1),
+            comment                 = "AAAA"
         )
 
-        NoticeView.objects.create(
-            id                 = 1,
-            user               = User.objects.get(id=1),
-            notice_posting = NoticeBoardPosting.objects.get(id=1),
+        OperatingView.objects.create(
+            id                      = 1,
+            user                    = User.objects.get(id=1),
+            operating_board_posting = OperatingBoardPosting.objects.get(id=1),
         )
 
         self.token = jwt.encode({'user_id':User.objects.get(id=1).id}, os.environ.get("SECRET"), 
@@ -105,15 +103,15 @@ class NoticeDetailView(TestCase):
 
     def tearDown(self):
         User.objects.all().delete()
-        NoticeBoardPosting.objects.all().delete()
-        NoticeComment.objects.all().delete()
-        NoticeView.objects.all().delete()
+        OperatingBoardPosting.objects.all().delete()
+        OperatingComment.objects.all().delete()
+        OperatingView.objects.all().delete()
 
     # 자유게시판 상세 조회 API unit test
     def test_success_detail_view_get(self):
         client   = Client()
         header   = {"HTTP_Authorization" : self.token}
-        response = client.get("/postings/notices/detail/1", **header, content_type='application/json')
+        response = client.get("/postings/operatings/detail/1", **header, content_type='application/json')
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"result":{
@@ -133,7 +131,7 @@ class NoticeDetailView(TestCase):
             "context": "Hello There"
         }
 
-        response = client.post("/postings/notices/detail", **header, content_type='application/json',
+        response = client.post("/postings/operatings/detail", **header, content_type='application/json',
                         data=json.dumps(body))
 
         self.assertEqual(response.status_code, 201)
@@ -147,7 +145,7 @@ class NoticeDetailView(TestCase):
             "posting_id" : 1
         }
 
-        response = client.delete("/postings/notices/detail", **header, content_type='application/json',
+        response = client.delete("/postings/operatings/detail", **header, content_type='application/json',
                         data=json.dumps(body))
 
         self.assertEqual(response.status_code, 204)
@@ -155,7 +153,7 @@ class NoticeDetailView(TestCase):
 
 
 # 자유게시판 댓글 API unit test
-class NoticeCommentView(TestCase):
+class OperatingCommentView(TestCase):
     def setUp(self):
         User.objects.create(
             id              = 1,
@@ -168,7 +166,7 @@ class NoticeCommentView(TestCase):
             phone_number    = '010-2222-3333',
         )
 
-        NoticeBoardPosting.objects.create(
+        OperatingBoardPosting.objects.create(
             id      = 1,
             title   = 'Hi',
             context = 'Hi',
@@ -180,9 +178,9 @@ class NoticeCommentView(TestCase):
 
     def tearDown(self):
         User.objects.all().delete()
-        NoticeBoardPosting.objects.all().delete()
-        NoticeComment.objects.all().delete()
-        NoticeView.objects.all().delete()
+        OperatingBoardPosting.objects.all().delete()
+        OperatingComment.objects.all().delete()
+        OperatingView.objects.all().delete()
 
     # 자유게시판 댓글 포스팅 API unit test
     def test_success_comment_view_post(self):
@@ -193,7 +191,7 @@ class NoticeCommentView(TestCase):
             "posting_id" : 1
         }
 
-        response = client.post("/postings/notices/comment", **header, 
+        response = client.post("/postings/operatings/comment", **header, 
                     content_type='application/json',
                     data=json.dumps(body))
 
@@ -202,20 +200,20 @@ class NoticeCommentView(TestCase):
 
 
 # 자유게시판 조회 API unit test
-class NoticeView(TestCase):
+class OperatingView(TestCase):
     def setUp(self):
         User.objects.create(
             id              = 1,
             email           = 'aasdfa@naver.com',
             psword          = '123AAV@@#',
             name            = '홍길동',
-            level           = 2,
+            level           = 1,
             gender          = '남',
             age             = 23,
             phone_number    = '010-2222-3333',
         )
 
-        NoticeBoardPosting.objects.create(
+        OperatingBoardPosting.objects.create(
             id      = 1,
             title   = 'Hi',
             context = 'Hi',
@@ -227,9 +225,9 @@ class NoticeView(TestCase):
 
     def tearDown(self):
         User.objects.all().delete()
-        NoticeBoardPosting.objects.all().delete()
-        NoticeComment.objects.all().delete()
-        NoticeView.objects.all().delete()
+        OperatingBoardPosting.objects.all().delete()
+        OperatingComment.objects.all().delete()
+        OperatingView.objects.all().delete()
 
     # 자유게시판 댓글 포스팅 API unit test
     def test_success_view_post(self):
@@ -239,7 +237,7 @@ class NoticeView(TestCase):
             "posting_id" : 1
         }
 
-        response = client.post("/postings/notices/view", **header, 
+        response = client.post("/postings/operatings/view", **header, 
                     content_type='application/json',
                     data=json.dumps(body))
 

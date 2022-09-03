@@ -1,31 +1,34 @@
 import json
 
 from django.views import View
-from django.http  import JsonResponse
+from django.http import JsonResponse
 
-from postings.models import NoticeBoardPosting, NoticeComment, NoticeView
+from postings.models import OperatingBoardPosting, OperatingComment, OperatingView
 from core.utils      import login_deco
 
-class NoticeListView(View):
+class OperatingListView(View):
     """
     * @code writer 조현우
-    * @GET ("/postings/notices")
+    * @GET ("/postings/operatings")
     *
     * @returns json
     """
     @login_deco
     def get(self, request):
         user = request.user
+
+        if user.level != "2":
+            return JsonResponse({"message": "NO_AUTHENTIFICATION"}, status=403)
         
-        postings = NoticeBoardPosting.objects.all()
+        postings = OperatingBoardPosting.objects.all()
 
         results = [
             {
                 "id": posting.id,
                 "title": posting.title,
                 "context": posting.context[:15],
-                "views": NoticeView.objects.filter(
-                    notice_posting=posting
+                "views": OperatingView.objects.filter(
+                    operating_board_posting=posting
                 ).count(),
             }
             for posting in postings
@@ -34,10 +37,10 @@ class NoticeListView(View):
         return JsonResponse({"results": results}, status=200)
 
 
-class NoticeDetailView(View):
+class OperatingDetailView(View):
     """
     * @code writer 조현우
-    * @GET ("/postings/notices/detail")
+    * @GET ("/postings/operatings/detail")
     *
     * @returns json
     """
@@ -46,14 +49,17 @@ class NoticeDetailView(View):
         try:
             user = request.user
 
-            posting = NoticeBoardPosting.objects.get(id=posting_id)
-            comments = NoticeComment.objects.filter(notice_posting=posting)
+            if user.level != "2":
+                return JsonResponse({"message": "NO_AUTHENTIFICATION"}, status=403)
 
-            NoticeView.objects.create(
-                notice_posting = posting,
-                user           = user
+            posting = OperatingBoardPosting.objects.get(id=posting_id)
+            comments = OperatingComment.objects.filter(operating_board_posting=posting)
+
+            OperatingView.objects.create(
+                operating_board_posting  = posting,
+                user                     = user
             )
-            views = NoticeView.objects.filter(notice_posting=posting).count()
+            views = OperatingView.objects.filter(operating_board_posting=posting).count()
 
             result = {
                 "id": posting.id,
@@ -64,12 +70,12 @@ class NoticeDetailView(View):
             }
 
             return JsonResponse({"result": result}, status=200)
-        except NoticeBoardPosting.DoesNotExist:
+        except OperatingBoardPosting.DoesNotExist:
             return JsonResponse({"message": "POSTING_DOES_NOT_EXIST"}, status=400)
 
     """
     * @code writer 조현우
-    * @POST ("/postings/notices/detail/<int:posting_id>")
+    * @POST ("/postings/operatings/detail/<int:posting_id>")
     *
     * @returns json
     """
@@ -83,15 +89,15 @@ class NoticeDetailView(View):
             if user.level != "2":
                 return JsonResponse({"message": "NO_AUTHENTIFICATION"}, status=403)
 
-            if NoticeBoardPosting.objects.filter(id=posting_id).exists():
-                NoticeBoardPosting.objects.filter(id=posting_id).update(
+            if OperatingBoardPosting.objects.filter(id=posting_id).exists():
+                OperatingBoardPosting.objects.filter(id=posting_id).update(
                     title   = data["title"],
                     context = data["context"],
                 )
 
                 return JsonResponse({"message": "SUCCESS"}, status=201)
 
-            NoticeBoardPosting.objects.create(
+            OperatingBoardPosting.objects.create(
                 title   = data["title"],
                 context = data["context"],
                 user    = user
@@ -104,7 +110,7 @@ class NoticeDetailView(View):
 
     """
     * @code writer 조현우
-    * @DELETE ("/postings/notices/detail/<int:posting_id>")
+    * @DELETE ("/postings/operatings/detail/<int:posting_id>")
     *
     * @returns json
     """
@@ -115,8 +121,7 @@ class NoticeDetailView(View):
 
             if user.level != "2":
                 return JsonResponse({"message": "NO_AUTHENTIFICATION"}, status=403)
-
-            posting = NoticeBoardPosting.objects.get(id=posting_id)
+            posting = OperatingBoardPosting.objects.get(id=posting_id)
 
             if user != posting.user:
                 return JsonResponse({"message": "NO_AUTHENTIFICATION"}, status=403)
@@ -126,42 +131,38 @@ class NoticeDetailView(View):
             return JsonResponse({"message": "DATA_DELETED"}, status=204)
         except KeyError:
             return JsonResponse({"message": "KEY_ERROR"}, status=400)
-        except NoticeBoardPosting.DoesNotExist:
+        except OperatingBoardPosting.DoesNotExist:
             return JsonResponse({"message": "POSTING_DOES_NOT_EXIST"}, status=400)
 
 
-class NoticeCommentView(View):
+class OperatingCommentView(View):
     """
     * @code writer 조현우
-    * @POST ("/postings/notices/comment")
+    * @POST ("/postings/operatings/comment")
     *
     * @returns json
     """
     @login_deco
     def post(self, request):
         try:
-            data       = json.loads(request.body)
-            user       = request.user
-            comment_id = data["comment_id"]
-            posting    = NoticeBoardPosting.objects.get(id=data['posting_id'])
+            data    = json.loads(request.body)
+            user    = request.user
+            posting = OperatingBoardPosting.objects.get(id=data['posting_id']) 
 
             if user.level != "2":
                 return JsonResponse({"message": "NO_AUTHENTIFICATION"}, status=403)
 
-            if NoticeBoardPosting.objects.filter(id=comment_id).exists():
-                NoticeBoardPosting.objects.filter(id=comment_id).update(
-                    comment         = data['comment']
-                )
-                
-                return JsonResponse({"message": "SUCCESS"}, status=201)
-
-            NoticeComment.objects.create(
-                comment         = data['comment'],
-                notice_posting  = posting,
-                user            = user,
+            posting, is_created = OperatingComment.objects.update_or_create(
+                comment                  = data['comment'],
+                operating_board_posting  = posting,
+                user                     = user,
+                defaults = {
+                    'comment' : data['comment']
+                }
             )
 
-            return JsonResponse({'message' : 'SUCCESS'}, status = 201)
+            status_code = 201 if is_created else 200
+            return JsonResponse({'message' : 'SUCCESS'}, status = status_code)
 
         except KeyError:
             return JsonResponse({'message' : 'KEY_ERROR'}, status = 400)
