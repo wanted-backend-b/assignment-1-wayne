@@ -11,12 +11,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 # os 환경변수
 import os
-import pymysql
 
 from pathlib import Path
 from dotenv import load_dotenv  # dotenv
-
-pymysql.install_as_MySQLdb()
 
 load_dotenv()
 
