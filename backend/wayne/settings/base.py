@@ -43,12 +43,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # DRF
-    'rest_framework',
-
+    "rest_framework",
     # Apps
     "postings",
     "users",
-    "statistics_aggregation"
+    "statistics_aggregation",
 ]
 
 MIDDLEWARE = [
