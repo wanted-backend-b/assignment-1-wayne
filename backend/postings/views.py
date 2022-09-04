@@ -39,7 +39,7 @@ class FreeBoardDetailView(View):
     def get(self, request, posting_id):
         try:
             user = request.user
-            
+
             posting = FreeBoardPosting.objects.get(id=posting_id)
             comments = FreeComment.objects.filter(free_board_posting=posting)
 
@@ -90,12 +90,9 @@ class FreeBoardDetailView(View):
     * @returns json
     """
     @login_deco
-    def delete(self, request):
+    def delete(self, request, posting_id):
         try:
-            data = json.loads(request)
-            user = request.user
-
-            posting = FreeBoardPosting.objects.get(id=data["posting_id"])
+            posting = FreeBoardPosting.objects.get(id=posting_id)
             posting.delete()
 
             return JsonResponse({'message' : 'DATA_DELETED'}, status = 204)

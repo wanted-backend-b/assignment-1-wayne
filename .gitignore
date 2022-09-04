@@ -10,7 +10,7 @@ idea/
 __pycache__/
 
 # Environments
-# .env
+.env
 
 # myslq
 mysql_data/
