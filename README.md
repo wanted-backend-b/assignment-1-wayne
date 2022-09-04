@@ -70,7 +70,7 @@ Language | Framwork | Database | HTTP | Develop | Tools
 ![](https://velog.velcdn.com/images/miracle-21/post/349b7e0f-3a30-4c92-bd71-3634751ff24b/image.png)
 
 # 🔖 참조 문서
-- postman api문서
+- [Postman API Docs](https://documenter.getpostman.com/view/11682851/VUxVpPbo)
 - [노션페이지](https://www.notion.so/Team-B-7214b88a6c54490baf57a8715f20086b)
 
 
