@@ -3,37 +3,29 @@ import json
 from django.views import View
 from django.http import JsonResponse
 
-from postings.models import (
-    OperatingBoardPosting,
-    OperatingComment,
-    OperatingView,
-)
+from postings.models import FreeBoardPosting, FreeComment, FreeView
+from core.utils import login_deco
 
 
-class OperatingListView(View):
+class FreeBoardListView(View):
     """
     * @code writer 조현우
-    * @GET ("/postings/operatings")
+    * @GET ("/postings/freeboards")
     *
     * @returns json
     """
 
+    @login_deco
     def get(self, request):
         user = request.user
-
-        if user.level != 2:
-            return JsonResponse({"message": "NO_AUTHENTIFICATION"}, status=403)
-
-        postings = OperatingBoardPosting.objects.all()
+        postings = FreeBoardPosting.objects.all()
 
         results = [
             {
                 "id": posting.id,
                 "title": posting.title,
                 "context": posting.context[:15],
-                "views": OperatingView.objects.filter(
-                    operating_board_posting=posting
-                ).count(),
+                "views": FreeView.objects.filter(free_board_posting=posting).count(),
             }
             for posting in postings
         ]
@@ -41,66 +33,51 @@ class OperatingListView(View):
         return JsonResponse({"results": results}, status=200)
 
 
-class OperatingDetailView(View):
+class FreeBoardDetailView(View):
     """
     * @code writer 조현우
-    * @GET ("/postings/operatings/detail")
+    * @GET ("/postings/freeboards/detail")
     *
     * @returns json
     """
 
+    @login_deco
     def get(self, request, posting_id):
         try:
             user = request.user
 
-            if user.level != 2:
-                return JsonResponse(
-                    {"message": "NO_AUTHENTIFICATION"}, status=403
-                )
-
-            posting = OperatingBoardPosting.objects.get(id=posting_id)
-            comments = OperatingComment.objects.filter(
-                operating_board_posting=posting
-            )
+            posting = FreeBoardPosting.objects.get(id=posting_id)
+            comments = FreeComment.objects.filter(free_board_posting=posting)
 
             result = {
                 "id": posting.id,
                 "title": posting.title,
                 "context": posting.context,
-                "views": OperatingView.objects.filter(
-                    operating_board_posting=posting
-                ).count(),
-                "comments": [comment for comment in comments],
+                "views": FreeView.objects.filter(free_board_posting=posting).count(),
+                "comments": [comment.comment for comment in comments],
             }
 
             return JsonResponse({"result": result}, status=200)
-        except OperatingBoardPosting.DoesNotExist:
-            return JsonResponse(
-                {"message": "POSTING_DOES_NOT_EXIST"}, status=400
-            )
+        except FreeBoardPosting.DoesNotExist:
+            return JsonResponse({"message": "POSTING_DOES_NOT_EXIST"}, status=400)
 
     """
     * @code writer 조현우
-    * @POST ("/postings/operatings/detail/<int:posting_id>")
+    * @POST ("/postings/freeboards/detail/<int:posting_id>")
     *
     * @returns json
     """
 
+    @login_deco
     def post(self, request):
         try:
             data = json.loads(request.body)
+            user = request.user
 
-            if user.level != 2:
-                return JsonResponse(
-                    {"message": "NO_AUTHENTIFICATION"}, status=403
-                )
-
-            (
-                posting,
-                is_created,
-            ) = OperatingBoardPosting.objects.update_or_create(
+            posting, is_created = FreeBoardPosting.objects.update_or_create(
                 title=data["title"],
                 context=data["context"],
+                user=user,
                 defaults={"title": data["title"], "context": data["context"]},
             )
 
@@ -112,28 +89,73 @@ class OperatingDetailView(View):
 
     """
     * @code writer 조현우
-    * @DELETE ("/postings/operatings/detail")
+    * @DELETE ("/postings/freeboards/detail")
     *
     * @returns json
     """
 
-    def delete(self, request):
+    @login_deco
+    def delete(self, request, posting_id):
         try:
-            data = json.loads(request)
-            user = request.user
-
-            if user.level != 2:
-                return JsonResponse(
-                    {"message": "NO_AUTHENTIFICATION"}, status=403
-                )
-
-            posting = OperatingBoardPosting.objects.get(id=data["posting_id"])
+            posting = FreeBoardPosting.objects.get(id=posting_id)
             posting.delete()
 
             return JsonResponse({"message": "DATA_DELETED"}, status=204)
         except KeyError:
             return JsonResponse({"message": "KEY_ERROR"}, status=400)
-        except OperatingBoardPosting.DoesNotExist:
-            return JsonResponse(
-                {"message": "POSTING_DOES_NOT_EXIST"}, status=400
+        except FreeBoardPosting.DoesNotExist:
+            return JsonResponse({"message": "POSTING_DOES_NOT_EXIST"}, status=400)
+
+
+class FreeBoardCommentView(View):
+    """
+    * @code writer 조현우
+    * @POST ("/postings/freeboards/comment")
+    *
+    * @returns json
+    """
+
+    @login_deco
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            user = request.user
+            posting = FreeBoardPosting.objects.get(id=data["posting_id"])
+
+            posting, is_created = FreeComment.objects.update_or_create(
+                comment=data["comment"],
+                free_board_posting=posting,
+                user=user,
+                defaults={"comment": data["comment"]},
             )
+
+            status_code = 201 if is_created else 200
+            return JsonResponse({"message": "SUCCESS"}, status=status_code)
+
+        except KeyError:
+            return JsonResponse({"message": "KEY_ERROR"}, status=400)
+
+
+class FreeBoardView(View):
+    """
+    * @code writer 조현우
+    * @POST ("/postings/freeboards/view")
+    *
+    * @returns json
+    """
+
+    @login_deco
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            user = request.user
+            posting = FreeBoardPosting.objects.get(id=data["posting_id"])
+
+            FreeView.objects.create(free_board_posting=posting, user=user)
+
+            count = FreeView.objects.filter(free_board_posting=posting).count()
+
+            return JsonResponse({"message": "SUCCESS", "count": count}, status=201)
+
+        except KeyError:
+            return JsonResponse({"message": "KEY_ERROR"}, status=400)
