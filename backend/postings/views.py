@@ -4,6 +4,7 @@ from django.views  import View
 from django.http   import JsonResponse
 
 from postings.models import FreeBoardPosting, FreeComment, FreeView
+from core.utils      import login_deco
 
 class FreeBoardListView(View):
     """
@@ -12,7 +13,9 @@ class FreeBoardListView(View):
     *
     * @returns json
     """
+    @login_deco
     def get(self, request):
+        user = request.user
         postings = FreeBoardPosting.objects.all()
 
         results = [{
@@ -32,8 +35,11 @@ class FreeBoardDetailView(View):
     *
     * @returns json
     """
+    @login_deco
     def get(self, request, posting_id):
         try:
+            user = request.user
+            
             posting = FreeBoardPosting.objects.get(id=posting_id)
             comments = FreeComment.objects.filter(free_board_posting=posting)
 
@@ -42,7 +48,7 @@ class FreeBoardDetailView(View):
                 'title'    : posting.title,
                 'context'  : posting.context,
                 'views'    : FreeView.objects.filter(free_board_posting=posting).count(),
-                'comments' : [comment for comment in comments]
+                'comments' : [comment.comment for comment in comments]
             }
 
             return JsonResponse({'result' : result}, status = 200)
@@ -55,13 +61,16 @@ class FreeBoardDetailView(View):
     *
     * @returns json
     """
+    @login_deco
     def post(self, request):
         try:
-            data    = json.loads(request.body)
+            data = json.loads(request.body)
+            user = request.user
 
             posting, is_created = FreeBoardPosting.objects.update_or_create(
                 title    = data['title'],
                 context  = data['context'],
+                user     = user,
                 defaults = {
                     'title'   : data['title'],
                     'context' : data['context']
@@ -80,9 +89,12 @@ class FreeBoardDetailView(View):
     *
     * @returns json
     """
+    @login_deco
     def delete(self, request):
         try:
-            data    = json.loads(request)
+            data = json.loads(request)
+            user = request.user
+
             posting = FreeBoardPosting.objects.get(id=data["posting_id"])
             posting.delete()
 
@@ -90,4 +102,61 @@ class FreeBoardDetailView(View):
         except KeyError:
             return JsonResponse({'message' : 'KEY_ERROR'}, status = 400)
         except FreeBoardPosting.DoesNotExist:
-            return JsonResponse({'message' : 'DATA_DOES_NOT_EXIST'}, status = 400)
+            return JsonResponse({'message' : 'POSTING_DOES_NOT_EXIST'}, status = 400)
+
+
+class FreeBoardCommentView(View):
+    """
+    * @code writer 조현우
+    * @POST ("/postings/freeboards/comment")
+    *
+    * @returns json
+    """
+    @login_deco
+    def post(self, request):
+        try:
+            data    = json.loads(request.body)
+            user    = request.user
+            posting = FreeBoardPosting.objects.get(id=data['posting_id']) 
+
+            posting, is_created = FreeComment.objects.update_or_create(
+                comment             = data['comment'],
+                free_board_posting  = posting,
+                user                = user,
+                defaults = {
+                    'comment' : data['comment']
+                }
+            )
+
+            status_code = 201 if is_created else 200
+            return JsonResponse({'message' : 'SUCCESS'}, status = status_code)
+
+        except KeyError:
+            return JsonResponse({'message' : 'KEY_ERROR'}, status = 400)
+
+
+class FreeBoardView(View):
+    """
+    * @code writer 조현우
+    * @POST ("/postings/freeboards/view")
+    *
+    * @returns json
+    """
+    @login_deco
+    def post(self, request):
+        try:
+            data    = json.loads(request.body)
+            user    = request.user
+            posting = FreeBoardPosting.objects.get(id=data['posting_id'])
+
+            FreeView.objects.create(
+                free_board_posting  = posting,
+                user                = user
+            )
+
+            count = FreeView.objects.filter(free_board_posting=posting).count()
+
+            return JsonResponse({'message' : 'SUCCESS', 'count' : count}, status = 201)
+
+        except KeyError:
+            return JsonResponse({'message' : 'KEY_ERROR'}, status = 400)

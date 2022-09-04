@@ -1,0 +1,20 @@
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+idea/
+.idea/
+
+### Python ###
+__pycache__/
+
+# Environments
+# .env
+
+# myslq
+mysql_data/
+
+
+manage.py
+wayne/settings/debug.py
+wayne/settings/base.py
