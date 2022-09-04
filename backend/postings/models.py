@@ -9,17 +9,20 @@ from users.models import User
 class NoticeBoardPosting(TimeStampCreateModel):
     title = models.CharField(max_length=100)
     context = models.CharField(max_length=500)
-    view    = models.ManyToManyField(User, through="NoticeView", related_name="notice_view")
-    comment = models.ManyToManyField(User, through="NoticeComment", related_name="notice_comment")
-    user    = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-
+    view = models.ManyToManyField(
+        User, through="NoticeView", related_name="notice_view"
+    )
+    comment = models.ManyToManyField(
+        User, through="NoticeComment", related_name="notice_comment"
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
         db_table = "notices_boards"
 
 
 class NoticeView(TimeStampCreateModel):
-    user           = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     notice_posting = models.ForeignKey(NoticeBoardPosting, on_delete=models.CASCADE)
 
     class Meta:
@@ -27,9 +30,9 @@ class NoticeView(TimeStampCreateModel):
 
 
 class NoticeComment(TimeStampModel):
-    user           = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     notice_posting = models.ForeignKey(NoticeBoardPosting, on_delete=models.CASCADE)
-    comment        = models.CharField(max_length=300)
+    comment = models.CharField(max_length=300)
 
     class Meta:
         db_table = "notices_comments"
@@ -37,9 +40,9 @@ class NoticeComment(TimeStampModel):
 
 # 자유게시판 모델링
 class FreeBoardPosting(TimeStampCreateModel):
-    title   = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
     context = models.CharField(max_length=500)
-    view    = models.ManyToManyField(User, through="FreeView", related_name="posting_view")
+    view = models.ManyToManyField(User, through="FreeView", related_name="posting_view")
     comment = models.ManyToManyField(
         User, through="FreeComment", related_name="posting_comment"
     )
@@ -50,7 +53,7 @@ class FreeBoardPosting(TimeStampCreateModel):
 
 
 class FreeView(TimeStampCreateModel):
-    user               = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     free_board_posting = models.ForeignKey(FreeBoardPosting, on_delete=models.CASCADE)
 
     class Meta:
@@ -58,9 +61,9 @@ class FreeView(TimeStampCreateModel):
 
 
 class FreeComment(TimeStampModel):
-    user               = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     free_board_posting = models.ForeignKey(FreeBoardPosting, on_delete=models.CASCADE)
-    comment            = models.CharField(max_length=300)
+    comment = models.CharField(max_length=300)
 
     class Meta:
         db_table = "free_comments"
@@ -70,22 +73,22 @@ class FreeComment(TimeStampModel):
 
 
 class OperatingBoardPosting(TimeStampCreateModel):
-    title   = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
     context = models.CharField(max_length=500)
-    view    = models.ManyToManyField(
+    view = models.ManyToManyField(
         User, through="OperatingView", related_name="operating_view"
     )
     comment = models.ManyToManyField(
         User, through="OperatingComment", related_name="operatin_comment"
     )
-    user    = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
         db_table = "operating_boards"
 
 
 class OperatingView(TimeStampCreateModel):
-    user                    = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     operating_board_posting = models.ForeignKey(
         OperatingBoardPosting, on_delete=models.CASCADE
     )
@@ -95,7 +98,7 @@ class OperatingView(TimeStampCreateModel):
 
 
 class OperatingComment(TimeStampModel):
-    user                    = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     operating_board_posting = models.ForeignKey(
         OperatingBoardPosting, on_delete=models.CASCADE
     )

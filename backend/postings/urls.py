@@ -4,7 +4,7 @@ from postings.views import (
     FreeBoardListView,
     FreeBoardDetailView,
     FreeBoardCommentView,
-    FreeBoardView
+    FreeBoardView,
 )
 
 urlpatterns = [
