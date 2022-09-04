@@ -42,9 +42,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # DRF
+    'rest_framework',
+
+    # Apps
     "postings",
     "users",
-    "rest_framework",
+    "statistics_aggregation"
 ]
 
 MIDDLEWARE = [
@@ -80,6 +84,13 @@ WSGI_APPLICATION = "wayne.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 DATABASES = {
     "default": {
