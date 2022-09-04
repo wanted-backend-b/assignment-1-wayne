@@ -19,7 +19,7 @@ class SignUpView(View):
             gender = data["gender"]
             age = data["age"]
             phone_number = data["phone_number"]
-            level = data["level"]
+            level = data["level"] if "level" in data else 1
 
             if User.objects.filter(email=email).exists():
                 return JsonResponse({"message": "이미 있는 이메일입니다."}, status=400)
