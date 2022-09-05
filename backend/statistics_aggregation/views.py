@@ -14,8 +14,6 @@ from django.db.models import Q
  * @returns json
  *
 """
-
-
 class OperateGenderView(View):
     def get(self, request):
         male_num = (
@@ -182,13 +180,9 @@ class NoticeAgeView(View):
  * @returns json
  *
 """
-
-
 class FreeAgeView(View):
     def get(self, request):
-
         result = {}
-
         for i in range(1, 10):
             age_num = (
                 FreeView.objects.select_related("user")
@@ -212,8 +206,6 @@ class FreeAgeView(View):
  * @returns json
  *
 """
-
-
 class OperateTimeView(View):
     def get(self, request):
         result = {}
@@ -229,7 +221,7 @@ class OperateTimeView(View):
 
         for i in id_list:
             update_time = (
-                Updated_time.objects.filter(user_id=i["user"])
+                UpdatedTime.objects.filter(user_id=i["user"])
                 .order_by("-modified_at")
                 .first()
             )
@@ -265,7 +257,7 @@ class NoticeTimeView(View):
         for i in id_list:
 
             update_time = (
-                Updated_time.objects.filter(user_id=i["user"])
+                UpdatedTime.objects.filter(user_id=i["user"])
                 .order_by("-modified_at")
                 .first()
             )
@@ -300,7 +292,7 @@ class FreeTimeView(View):
         for i in id_list:
 
             update_time = (
-                Updated_time.objects.filter(user_id=i["user"])
+                UpdatedTime.objects.filter(user_id=i["user"])
                 .order_by("-modified_at")
                 .first()
             )

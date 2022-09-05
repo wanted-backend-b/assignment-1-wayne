@@ -6,7 +6,7 @@ import os
 
 from django.test import TestCase, Client
 
-from .models import User
+from users.models import User
 
 
 class SignUpTest(TestCase):
@@ -27,12 +27,11 @@ class SignUpTest(TestCase):
 
     def tearDown(self):
         User.objects.all().delete()
-        print("signup end")
 
     def test_signup_success(self):
-        '''
+        """
         회원가입 테스트
-        '''
+        """
         client = Client()
 
         test_user = {
@@ -69,7 +68,6 @@ class LogInTest(TestCase):
 
     def tearDown(self):
         User.objects.all().delete()
-        print("login end")
 
     def test_login(self):
         client = Client()
@@ -120,7 +118,6 @@ class WithdrawalTest(TestCase):
 
     def tearDown(self):
         User.objects.all().delete()
-        print("Withdrawal end")
 
     def test_WithdrawalV(self):
         client = Client()
