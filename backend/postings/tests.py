@@ -7,7 +7,8 @@ from django.test import TestCase, Client
 from postings.models import OperatingBoardPosting, OperatingComment, OperatingView
 from users.models    import User
 
-class OperatingListView(TestCase):
+
+class OperatingListViewAPITest(TestCase):
     def setUp(self):
         User.objects.create(
                 id              = 1,
@@ -65,7 +66,7 @@ class OperatingListView(TestCase):
 
 
 # 자유게시판 상세 API unit test
-class OperatingDetailView(TestCase):
+class OperatingDetailViewAPITest(TestCase):
     def setUp(self):
         User.objects.create(
             id              = 1,
@@ -110,9 +111,10 @@ class OperatingDetailView(TestCase):
     # 자유게시판 상세 조회 API unit test
     def test_success_detail_view_get(self):
         client   = Client()
-        header   = {"HTTP_Authorization" : self.token}
+        header   = {"Authorization" : self.token}
+        print('header: ', header)
         response = client.get("/postings/operatings/detail/1", **header, content_type='application/json')
-
+        print('response: ', response.json())
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"result":{
                 'id'       : 1,
@@ -153,7 +155,7 @@ class OperatingDetailView(TestCase):
 
 
 # 자유게시판 댓글 API unit test
-class OperatingCommentView(TestCase):
+class OperatingCommentViewAPITest(TestCase):
     def setUp(self):
         User.objects.create(
             id              = 1,
@@ -200,7 +202,7 @@ class OperatingCommentView(TestCase):
 
 
 # 자유게시판 조회 API unit test
-class OperatingView(TestCase):
+class OperatingViewAPITest(TestCase):
     def setUp(self):
         User.objects.create(
             id              = 1,

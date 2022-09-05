@@ -3,7 +3,7 @@ import jwt
 import os
 
 from django.test import TestCase, Client
-from users.models import Updated_time
+from users.models import UpdatedTime
 
 from postings.models import FreeBoardPosting, FreeView
 from postings.models import OperatingBoardPosting, OperatingView
@@ -86,8 +86,8 @@ class StatisticFreeView(TestCase):
 
     # 자유게시판의 글을 조회한 시간대별 집계 api unit test
     def test_free_time_view(self):
-        Updated_time.objects.create(user=User.objects.get(id=1))
-        update_time_obj = Updated_time.objects.get(user=User.objects.get(id=1))
+        UpdatedTime.objects.create(user=User.objects.get(id=1))
+        update_time_obj = UpdatedTime.objects.get(user=User.objects.get(id=1))
 
         client = Client()
         header = {"HTTP_Authorization": self.token}
@@ -187,8 +187,8 @@ class StatisticOperateView(TestCase):
 
     # 운영게시판의 글을 조회한 시간대별 집계 api unit test
     def test_operate_time_view(self):
-        Updated_time.objects.create(user=User.objects.get(id=1))
-        update_time_obj = Updated_time.objects.get(user=User.objects.get(id=1))
+        UpdatedTime.objects.create(user=User.objects.get(id=1))
+        update_time_obj = UpdatedTime.objects.get(user=User.objects.get(id=1))
 
         client = Client()
         header = {"HTTP_Authorization": self.token}
@@ -290,8 +290,8 @@ class StatisticNoticeView(TestCase):
 
     # 운영게시판의 글을 조회한 시간대별 집계 api unit test
     def test_notice_time_view(self):
-        Updated_time.objects.create(user=User.objects.get(id=1))
-        update_time_obj = Updated_time.objects.get(user=User.objects.get(id=1))
+        UpdatedTime.objects.create(user=User.objects.get(id=1))
+        update_time_obj = UpdatedTime.objects.get(user=User.objects.get(id=1))
 
         client = Client()
         header = {"HTTP_Authorization": self.token}
