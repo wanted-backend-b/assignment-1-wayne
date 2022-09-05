@@ -1,7 +1,7 @@
 import json
 
 from django.views import View
-from django.http import JsonResponse
+from django.http  import JsonResponse
 
 from postings.models import NoticeBoardPosting, NoticeComment, NoticeView
 from core.utils      import login_deco
