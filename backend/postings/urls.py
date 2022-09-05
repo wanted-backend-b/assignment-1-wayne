@@ -14,3 +14,4 @@ urlpatterns = [
     path("freeboards/comment", FreeBoardCommentView.as_view()),
     path("freeboards/view", FreeBoardView.as_view()),
 ]
+
