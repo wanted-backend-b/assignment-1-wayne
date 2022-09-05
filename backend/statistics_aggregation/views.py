@@ -141,7 +141,7 @@ class OperateAgeView(View):
 
             result[age_key] = age_num
 
-        return JsonResponse(result, status=status.HTTP_200_OK)
+        return JsonResponse({"result": result}, status=status.HTTP_200_OK)
 
 
 """
@@ -171,7 +171,7 @@ class NoticeAgeView(View):
 
             result[age_key] = age_num
 
-        return JsonResponse(result, status=status.HTTP_200_OK)
+        return JsonResponse({"result": result}, status=status.HTTP_200_OK)
 
 
 """
@@ -201,7 +201,7 @@ class FreeAgeView(View):
 
             result[age_key] = age_num
 
-        return JsonResponse(result, status=status.HTTP_200_OK)
+        return JsonResponse({"result": result}, status=status.HTTP_200_OK)
 
 
 """
@@ -228,16 +228,17 @@ class OperateTimeView(View):
         )
 
         for i in id_list:
-
             update_time = (
                 Updated_time.objects.filter(user_id=i["user"])
                 .order_by("-modified_at")
                 .first()
             )
-            key = str(update_time.modified_at.hour)
-            result[key] = result[key] + 1
 
-        return JsonResponse(result, status=status.HTTP_200_OK)
+            if update_time is not None:
+                key = str(update_time.modified_at.hour)
+                result[key] = result[key] + 1
+
+        return JsonResponse({"result": result}, status=status.HTTP_200_OK)
 
 
 """
@@ -268,10 +269,11 @@ class NoticeTimeView(View):
                 .order_by("-modified_at")
                 .first()
             )
-            key = str(update_time.modified_at.hour)
-            result[key] = result[key] + 1
+            if update_time is not None:
+                key = str(update_time.modified_at.hour)
+                result[key] = result[key] + 1
 
-        return JsonResponse(result, status=status.HTTP_200_OK)
+        return JsonResponse({"result": result}, status=status.HTTP_200_OK)
 
 
 """
@@ -302,7 +304,8 @@ class FreeTimeView(View):
                 .order_by("-modified_at")
                 .first()
             )
-            key = str(update_time.modified_at.hour)
-            result[key] = result[key] + 1
+            if update_time is not None:
+                key = str(update_time.modified_at.hour)
+                result[key] = result[key] + 1
 
-        return JsonResponse(result, status=status.HTTP_200_OK)
+        return JsonResponse({"result": result}, status=status.HTTP_200_OK)
