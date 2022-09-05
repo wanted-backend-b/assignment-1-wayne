@@ -29,6 +29,8 @@
 * readme 작성
 #### 👉 윤정기
 #### 👉 전예솜
+- 남녀별, 나이별, 시간대별 게시판 이용 통계 api 구현
+- 통계 api 유닛 테스크 코드 
 #### 👉 조현우
 * ERD 작성
 * 운영 게시판, 공지사항, 자유 게시판 API 구현
@@ -83,6 +85,16 @@ Language | Framwork | Database | HTTP | Develop | Tools
 | /postings/freeboards/detail | POST | 자유 게시판 상세 포스팅 | title: string, context: string, posting_id: int | - |
 | /postings/freeboards/detail | DELETE | 자유 게시판 상세 삭제 | posting_id: int | - |
 | /postings/freeboards/comment | POST | 자유 게시판 댓글 | comment: string, posting_id: int | - |
+| /statistics/gender/operate | GET | 운영게시판 남녀별 이용 통계 조회| - | 남녀별 이용자 수 |
+| /statistics/gender/free | GET | 자유게시판 남녀별 이용 통계 조회| - | 남녀별 이용자 수 |
+| /statistics/gender/notice | GET | 공지사항 남녀별 이용 통계 조회| - | 남녀별 이용자 수 |
+| /statistics/age/operate | GET | 운영게시판 나이별 이용 통계 조회| - | 나이별 이용자 수 |
+| /statistics/age/free | GET | 자유게시판 나이별 이용 통계 조회| - | 나이별 이용자 수 |
+| /statistics/age/notice | GET | 공지사항 나이별 이용 통계 조회| - | 나이별 이용자 수 |
+| /statistics/time/operate | GET | 운영게시판 시간대별 이용 통계 조회| - | 시간대별 이용자 수 |
+| /statistics/time/free | GET | 자유게시판 시간대별 이용 통계 조회| - | 시간대별 이용자 수 |
+| /statistics/time/notice | GET | 공지사항 시간대별 이용 통계 조회| - | 시간대별 이용자 수 |
+
 
 # 📚 ERD
 ![](https://velog.velcdn.com/images/miracle-21/post/349b7e0f-3a30-4c92-bd71-3634751ff24b/image.png)
