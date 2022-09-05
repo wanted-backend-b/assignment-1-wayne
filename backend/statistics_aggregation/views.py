@@ -141,7 +141,7 @@ class OperateAgeView(View):
 
             result[age_key] = age_num
 
-        return JsonResponse(result, status=status.HTTP_200_OK)
+        return JsonResponse({"result": result}, status=status.HTTP_200_OK)
 
 
 """
@@ -171,7 +171,7 @@ class NoticeAgeView(View):
 
             result[age_key] = age_num
 
-        return JsonResponse(result, status=status.HTTP_200_OK)
+        return JsonResponse({"result": result}, status=status.HTTP_200_OK)
 
 
 """
@@ -201,7 +201,7 @@ class FreeAgeView(View):
 
             result[age_key] = age_num
 
-        return JsonResponse(result, status=status.HTTP_200_OK)
+        return JsonResponse({"result": result}, status=status.HTTP_200_OK)
 
 
 """
@@ -237,7 +237,7 @@ class OperateTimeView(View):
             key = str(update_time.modified_at.hour)
             result[key] = result[key] + 1
 
-        return JsonResponse(result, status=status.HTTP_200_OK)
+        return JsonResponse({"result": result}, status=status.HTTP_200_OK)
 
 
 """
@@ -271,7 +271,7 @@ class NoticeTimeView(View):
             key = str(update_time.modified_at.hour)
             result[key] = result[key] + 1
 
-        return JsonResponse(result, status=status.HTTP_200_OK)
+        return JsonResponse({"result": result}, status=status.HTTP_200_OK)
 
 
 """
@@ -305,4 +305,4 @@ class FreeTimeView(View):
             key = str(update_time.modified_at.hour)
             result[key] = result[key] + 1
 
-        return JsonResponse(result, status=status.HTTP_200_OK)
+        return JsonResponse({"result": result}, status=status.HTTP_200_OK)
