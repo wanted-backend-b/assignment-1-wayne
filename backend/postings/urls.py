@@ -1,14 +1,14 @@
 from django.urls import path
 
 from postings.views import (
-    OperatingListView,
-    OperatingDetailView,
-    OperatingCommentView
+    FreeBoardListView,
+    FreeBoardDetailView,
+    FreeBoardCommentView
 )
 
 urlpatterns = [
-    path("/operatings", OperatingListView.as_view()),
-    path("/operatings/detail", OperatingDetailView.as_view()),
-    path("/operatings/detail/<int:posting_id>", OperatingDetailView.as_view()),
-    path("/operatings/comment", OperatingCommentView.as_view())
+    path("freeboards", FreeBoardListView.as_view()),
+    path("freeboards/detail", FreeBoardDetailView.as_view()),
+    path("freeboards/detail/<int:posting_id>", FreeBoardDetailView.as_view()),
+    path("freeboards/comment", FreeBoardCommentView.as_view())
 ]
