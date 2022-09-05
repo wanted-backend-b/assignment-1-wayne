@@ -28,6 +28,10 @@
 #### 👉 박민하
 * readme 작성
 #### 👉 윤정기
+- 유저 회원가입 API 구현
+- 유저 로그인 API 구현
+- 유저 회원탈퇴 API 구현
+- 유저 @login_deco 기능 구현
 #### 👉 전예솜
 - 남녀별, 나이별, 시간대별 게시판 이용 통계 api 구현
 - 통계 api 유닛 테스크 코드 
@@ -68,8 +72,11 @@ Language | Framwork | Database | HTTP | Develop | Tools
 | <img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white"> | <img src="https://img.shields.io/badge/django-092E20?style=for-the-badge&logo=django&logoColor=white"> | <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> | <img src="https://img.shields.io/badge/postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white"> | <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"> | <img src="https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white"> <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"> 
 
 # 🎯 API Endpoints
-| endpoint | HTTP Method | 기능 | require parameter | response data |
-|----------|-------------|------|-------------------|---------------|
+| endpoint | HTTP Method | 기능   | require parameter                                                                                                   | response data |
+|----------|-------------|------|---------------------------------------------------------------------------------------------------------------------|---------------|
+| users/signup/     | POST        | 회원가입 | name: string <br/>email: string <br/>psword: string <br/>gender: string <br/>age: string <br/>phone_number: string<br/> level: string | 회원가입 성공여부     |
+| users/login/      | POST        | 로그인  | email: string <br/>psword: string                                                                                         | 로그인 성공여부      |
+| users/withdrawal/     | POST        | 회원탈퇴 | email: string <br/>psword: string                                                                                         | 회원탈퇴 성공여부     |
 | /postings/operatings | GET | 운영 게시판 리스트 조회 | - | 운영 게시판 리스트 |
 | /postings/operatings/detail | GET | 운영 게시판 상세 조회 | posting_id: int | 운영 게시판 상세 |
 | /postings/operatings/detail | POST | 운영 게시판 상세 포스팅 | title: string, context: string, posting_id: int | - |
