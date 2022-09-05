@@ -7,8 +7,8 @@ from postings.views import (
 )
 
 urlpatterns = [
-    path("/operatings", OperatingListView.as_view()),
-    path("/operatings/detail", OperatingDetailView.as_view()),
-    path("/operatings/detail/<int:posting_id>", OperatingDetailView.as_view()),
-    path("/operatings/comment", OperatingCommentView.as_view())
+    path("operatings", OperatingListView.as_view()),
+    path("operatings/detail", OperatingDetailView.as_view()),
+    path("operatings/detail/<int:posting_id>", OperatingDetailView.as_view()),
+    path("operatings/comment", OperatingCommentView.as_view())
 ]

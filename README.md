@@ -33,7 +33,12 @@
 - 유저 회원탈퇴 API 구현
 - 유저 @login_deco 기능 구현
 #### 👉 전예솜
+- 남녀별, 나이별, 시간대별 게시판 이용 통계 api 구현
+- 통계 api 유닛 테스크 코드 
 #### 👉 조현우
+* ERD 작성
+* 운영 게시판, 공지사항, 자유 게시판 API 구현
+* 접근 제어 기능 구현
 
 # 📝 요구사항 및 분석
 ### 1. 공지사항, 자유게시판, 운영게시판
@@ -72,6 +77,31 @@ Language | Framwork | Database | HTTP | Develop | Tools
 | users/signup/     | POST        | 회원가입 | name: string <br/>email: string <br/>psword: string <br/>gender: string <br/>age: string <br/>phone_number: string<br/> level: string | 회원가입 성공여부     |
 | users/login/      | POST        | 로그인  | email: string <br/>psword: string                                                                                         | 로그인 성공여부      |
 | users/withdrawal/     | POST        | 회원탈퇴 | email: string <br/>psword: string                                                                                         | 회원탈퇴 성공여부     |
+| /postings/operatings | GET | 운영 게시판 리스트 조회 | - | 운영 게시판 리스트 |
+| /postings/operatings/detail | GET | 운영 게시판 상세 조회 | posting_id: int | 운영 게시판 상세 |
+| /postings/operatings/detail | POST | 운영 게시판 상세 포스팅 | title: string, context: string, posting_id: int | - |
+| /postings/operatings/detail | DELETE | 운영 게시판 상세 삭제 | posting_id: int | - |
+| /postings/operatings/comment | POST | 운영 게시판 댓글 | comment: string, posting_id: int | - |
+| /postings/notices | GET | 공지사항 게시판 리스트 조회 | - | 공지사항 게시판 리스트 |
+| /postings/notices/detail | GET | 공지사항 게시판 상세 조회 | posting_id: int | 공지사항 게시판 상세 |
+| /postings/notices/detail | POST | 공지사항 게시판 상세 포스팅 | title: string, context: string, posting_id: int | - |
+| /postings/notices/detail | DELETE | 공지사항 게시판 상세 삭제 | posting_id: int | - |
+| /postings/notices/comment | POST | 공지사항 게시판 댓글 | comment: string, posting_id: int | - |
+| /postings/freeboards | GET | 자유 게시판 리스트 조회 | - | 자유 게시판 리스트 |
+| /postings/freeboards/detail | GET | 자유 게시판 상세 조회 | posting_id: int | 자유 게시판 상세 |
+| /postings/freeboards/detail | POST | 자유 게시판 상세 포스팅 | title: string, context: string, posting_id: int | - |
+| /postings/freeboards/detail | DELETE | 자유 게시판 상세 삭제 | posting_id: int | - |
+| /postings/freeboards/comment | POST | 자유 게시판 댓글 | comment: string, posting_id: int | - |
+| /statistics/gender/operate | GET | 운영게시판 남녀별 이용 통계 조회| - | 남녀별 이용자 수 |
+| /statistics/gender/free | GET | 자유게시판 남녀별 이용 통계 조회| - | 남녀별 이용자 수 |
+| /statistics/gender/notice | GET | 공지사항 남녀별 이용 통계 조회| - | 남녀별 이용자 수 |
+| /statistics/age/operate | GET | 운영게시판 나이별 이용 통계 조회| - | 나이별 이용자 수 |
+| /statistics/age/free | GET | 자유게시판 나이별 이용 통계 조회| - | 나이별 이용자 수 |
+| /statistics/age/notice | GET | 공지사항 나이별 이용 통계 조회| - | 나이별 이용자 수 |
+| /statistics/time/operate | GET | 운영게시판 시간대별 이용 통계 조회| - | 시간대별 이용자 수 |
+| /statistics/time/free | GET | 자유게시판 시간대별 이용 통계 조회| - | 시간대별 이용자 수 |
+| /statistics/time/notice | GET | 공지사항 시간대별 이용 통계 조회| - | 시간대별 이용자 수 |
+
 
 # 📚 ERD
 ![](https://velog.velcdn.com/images/miracle-21/post/349b7e0f-3a30-4c92-bd71-3634751ff24b/image.png)
