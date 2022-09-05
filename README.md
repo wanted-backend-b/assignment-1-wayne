@@ -30,6 +30,9 @@
 #### 👉 윤정기
 #### 👉 전예솜
 #### 👉 조현우
+* ERD 작성
+* 운영 게시판, 공지사항, 자유 게시판 API 구현
+* 접근 제어 기능 구현
 
 # 📝 요구사항 및 분석
 ### 1. 공지사항, 자유게시판, 운영게시판
@@ -65,9 +68,21 @@ Language | Framwork | Database | HTTP | Develop | Tools
 # 🎯 API Endpoints
 | endpoint | HTTP Method | 기능 | require parameter | response data |
 |----------|-------------|------|-------------------|---------------|
-|          |             |      |                   |               |
-|          |             |      |                   |               |
-|          |             |      |                   |               |
+| /postings/operatings | GET | 운영 게시판 리스트 조회 | - | 운영 게시판 리스트 |
+| /postings/operatings/detail | GET | 운영 게시판 상세 조회 | posting_id: int | 운영 게시판 상세 |
+| /postings/operatings/detail | POST | 운영 게시판 상세 포스팅 | title: string, context: string, posting_id: int | - |
+| /postings/operatings/detail | DELETE | 운영 게시판 상세 삭제 | posting_id: int | - |
+| /postings/operatings/comment | POST | 운영 게시판 댓글 | comment: string, posting_id: int | - |
+| /postings/notices | GET | 공지사항 게시판 리스트 조회 | - | 공지사항 게시판 리스트 |
+| /postings/notices/detail | GET | 공지사항 게시판 상세 조회 | posting_id: int | 공지사항 게시판 상세 |
+| /postings/notices/detail | POST | 공지사항 게시판 상세 포스팅 | title: string, context: string, posting_id: int | - |
+| /postings/notices/detail | DELETE | 공지사항 게시판 상세 삭제 | posting_id: int | - |
+| /postings/notices/comment | POST | 공지사항 게시판 댓글 | comment: string, posting_id: int | - |
+| /postings/freeboards | GET | 자유 게시판 리스트 조회 | - | 자유 게시판 리스트 |
+| /postings/freeboards/detail | GET | 자유 게시판 상세 조회 | posting_id: int | 자유 게시판 상세 |
+| /postings/freeboards/detail | POST | 자유 게시판 상세 포스팅 | title: string, context: string, posting_id: int | - |
+| /postings/freeboards/detail | DELETE | 자유 게시판 상세 삭제 | posting_id: int | - |
+| /postings/freeboards/comment | POST | 자유 게시판 댓글 | comment: string, posting_id: int | - |
 
 # 📚 ERD
 ![](https://velog.velcdn.com/images/miracle-21/post/349b7e0f-3a30-4c92-bd71-3634751ff24b/image.png)
