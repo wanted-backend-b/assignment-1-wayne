@@ -25,6 +25,10 @@
 #### 👉 박민하
 * readme 작성
 #### 👉 윤정기
+- 유저 회원가입 API 기능 구현
+- 유저 로그인 API 기능 구현
+- 유저 회원탈퇴 API 기능 구현
+- 유저 @login_deco 기능 구현
 #### 👉 전예솜
 #### 👉 조현우
 
@@ -60,11 +64,11 @@ Language | Framwork | Database | HTTP | Develop | Tools
 | <img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white"> | <img src="https://img.shields.io/badge/django-092E20?style=for-the-badge&logo=django&logoColor=white"> | <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> | <img src="https://img.shields.io/badge/postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white"> | <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"> | <img src="https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white"> <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"> 
 
 # 🎯 API Endpoints
-| endpoint | HTTP Method | 기능 | require parameter | response data |
-|----------|-------------|------|-------------------|---------------|
-|          |             |      |                   |               |
-|          |             |      |                   |               |
-|          |             |      |                   |               |
+| endpoint | HTTP Method | 기능   | require parameter                                                                                                   | response data |
+|----------|-------------|------|---------------------------------------------------------------------------------------------------------------------|---------------|
+| users/signup/     | POST        | 회원가입 | name: string <br/>email: string <br/>psword: string <br/>gender: string <br/>age: string <br/>phone_number: string<br/> level: string | 회원가입 성공여부     |
+| users/login/      | POST        | 로그인  | email: string <br/>psword: string                                                                                         | 로그인 성공여부      |
+| users/withdrawal/     | POST        | 회원탈퇴 | email: string <br/>psword: string                                                                                         | 회원탈퇴 성공여부     |
 
 # 📚 ERD
 ![](https://velog.velcdn.com/images/miracle-21/post/349b7e0f-3a30-4c92-bd71-3634751ff24b/image.png)
