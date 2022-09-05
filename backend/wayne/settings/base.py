@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 # os 환경변수
 import os
 
+
 from pathlib import Path
 from dotenv import load_dotenv  # dotenv
 
