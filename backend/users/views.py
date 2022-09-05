@@ -36,6 +36,7 @@ class SignUpView(View):
                 phone_number=phone_number,
                 level=level,
             )
+
             return JsonResponse({"message": "회원가입 완료"}, status=201)
 
         except Exception as e:
