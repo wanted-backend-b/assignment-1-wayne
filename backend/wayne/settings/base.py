@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 # os 환경변수
 import os
 
+
 from pathlib import Path
 from dotenv import load_dotenv  # dotenv
 
@@ -53,7 +54,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    # "django.middleware.common.CommonMiddleware",
+    "django.middleware.common.CommonMiddleware",
     # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",

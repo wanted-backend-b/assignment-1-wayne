@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.views.generic import View
 from postings.models import FreeView, NoticeView, OperatingView
-from users.models import Updated_time
+from users.models import UpdatedTime
 from rest_framework import status
 from django.db.models import Q
 
@@ -228,14 +228,15 @@ class OperateTimeView(View):
         )
 
         for i in id_list:
-
             update_time = (
                 Updated_time.objects.filter(user_id=i["user"])
                 .order_by("-modified_at")
                 .first()
             )
-            key = str(update_time.modified_at.hour)
-            result[key] = result[key] + 1
+
+            if update_time is not None:
+                key = str(update_time.modified_at.hour)
+                result[key] = result[key] + 1
 
         return JsonResponse({"result": result}, status=status.HTTP_200_OK)
 
@@ -268,8 +269,9 @@ class NoticeTimeView(View):
                 .order_by("-modified_at")
                 .first()
             )
-            key = str(update_time.modified_at.hour)
-            result[key] = result[key] + 1
+            if update_time is not None:
+                key = str(update_time.modified_at.hour)
+                result[key] = result[key] + 1
 
         return JsonResponse({"result": result}, status=status.HTTP_200_OK)
 
@@ -302,7 +304,8 @@ class FreeTimeView(View):
                 .order_by("-modified_at")
                 .first()
             )
-            key = str(update_time.modified_at.hour)
-            result[key] = result[key] + 1
+            if update_time is not None:
+                key = str(update_time.modified_at.hour)
+                result[key] = result[key] + 1
 
         return JsonResponse({"result": result}, status=status.HTTP_200_OK)
